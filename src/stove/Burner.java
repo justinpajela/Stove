@@ -69,7 +69,7 @@ public class Burner {
                 case LOW:
                     temp = Temperature.WARM;
                     break;
-                case MEDIUM:
+                case MEDIUM: //
                     temp = Temperature.HOT; 
                     break;
                 case HIGH:
