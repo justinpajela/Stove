@@ -32,12 +32,29 @@ public class Stove {
 	 */
 	
 	public void displayStove() {
-		for (int i = 0; i < burners.size(); i++) {
-            Burner burner = burners.get(i);
-            System.out.println("Burner " + (i + 1) + ": Setting = "  + ", Temperature = " + burner.getTemperature().getDescription());
-        }
+		Boolean hot = false; 
+		// iterating through options for oven heating up
+		for (int i = 0; i < NUM_BURNERS; i++) { 
+			System.out.print(burners.get(i).display());
+			if (burners.get(i).getTemperature().toString() == "COLD") {
+				System.out.println("coooool");
+			}
+			else if (burners.get(i).getTemperature().toString() == "WARM") {
+				System.out.println("Warm");
+			}
+			else if (burners.get(i).getTemperature().toString() == "HOT") {
+				System.out.println("CAREFUL");
+			}
+			else if (burners.get(i).getTemperature().toString() == "FIRE") {
+				System.out.println("VERY HOT! DON'T TOUCH");
+				hot = true;
+			}
+		}
+		if (hot == true) {
+			System.out.println("RED LIGHT - HOT BURNER ALERT");
+		}
 	}
-	
+
 	/**
 	 * Test various burner actions by turning them up
 	 */

@@ -1,8 +1,16 @@
+/*
+ * 
+ * Authors: Justin Pajela and Brody Perlick
+ * Date:January 29, 2024
+ * Collaborators: None
+ * Outside Sources: None
+ */
 package stove;
+
 
 public class Burner {
 	public enum Temperature {
-        HOT("VERY HOT"), COLD("COLD"), WARM("WARM");
+        FIRE("VERY HOT"),HOT("CAREFUL"), COLD("COLD"), WARM("WARM");
 
         private String description;
 
@@ -16,7 +24,7 @@ public class Burner {
 	Setting setting;
 	Temperature temp;
 	private int timer;
-	private final int duration = 2;
+	public final static int duration = 2;
 	public Burner() {
 		this.temp = Temperature.COLD;
 		this.setting = Setting.OFF;
@@ -57,27 +65,53 @@ public class Burner {
 	}
 
 	public void updateTemperature() {
-		if (timer > 0) {
-            timer = timer - 1;
-        }
-
-        if (timer == 0) {
-            switch (setting) {
-                case OFF:
-                    temp = Temperature.COLD;
-                    break;
-                case LOW:
-                    temp = Temperature.WARM;
-                    break;
-                case MEDIUM: //
-                    temp = Temperature.HOT; 
-                    break;
-                case HIGH:
-                    temp = Temperature.HOT;
-                    break;
-            }
-        }
-    }
+		if (timer > 0){
+			timer --; 
+			if (timer == 0) {
+				if (getTemperature() == Temperature.COLD) {
+					if (setting == Setting.LOW) {
+						temp = Temperature.WARM;
+					} else if (setting == Setting.MEDIUM || setting == Setting.HIGH) { 
+						temp = Temperature.WARM;
+						timer = duration;
+					}
+				} else if (getTemperature() == Temperature.WARM) {
+					if (setting == Setting.MEDIUM) {
+						temp = Temperature.HOT;
+					} else if (setting == Setting.HIGH) {
+						temp = Temperature.HOT;
+						timer = duration;
+					} else if (setting == Setting.OFF) {
+						temp = Temperature.COLD;
+					}
+				} else if (getTemperature() == Temperature.HOT) {
+					if (setting == Setting.HIGH) {
+						temp = Temperature.FIRE;
+					}
+					else if (setting == Setting.LOW) {
+						temp = Temperature.WARM;
+						timer = duration;
+					} else if (setting == Setting.OFF) {
+						temp = Temperature.COLD;
+					}
+				} else if (getTemperature() == Temperature.FIRE) {
+					if (setting != Setting.HIGH) {
+						temp = Temperature.HOT;
+						timer = duration;
+					}
+				}
+			}
+		}
+	}
+	
+	public String display() {
+		return setting.toString(); 
+	
+	}
+	public Temperature getTemperature() {
+		
+		return temp;
+	}
 }
 	
 
